@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucila XV · 16 de Mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#D4AF37;--gold-light:#F5DEB3;--gold-dark:#A0832A;
+    --rose:#C8A4B4;--deep:#1a0a2e;--mid:#2d1b4e;
+    --star:#fffbe8;--text-light:#f0e8ff;
+  }
+  body{
+    background:var(--deep);
+    font-family:'Cormorant Garamond',serif;
+    color:var(--text-light);
+    overflow-x:hidden;
+    cursor:default;
+  }
+  .stars-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  .star-particle{
+    position:absolute;border-radius:50%;background:white;
+    animation:twinkle var(--dur,3s) ease-in-out infinite;opacity:0;
+  }
+  @keyframes twinkle{0%,100%{opacity:0;transform:scale(0.5)}50%{opacity:var(--op,0.8);transform:scale(1)}}
+  .floating-petals{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .petal{position:absolute;top:-20px;animation:fall linear infinite;opacity:0.4;}
+  @keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:0}10%{opacity:0.5}90%{opacity:0.3}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+  .container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 20px 80px;}
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0;position:relative;}
+  .crown-svg{margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(212,175,55,0.6));}
+  .XV-badge{
+    font-family:'Playfair Display',serif;font-size:72px;font-weight:700;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    line-height:1;margin-bottom:8px;animation:shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+  .invite-pre{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--rose);margin-bottom:24px;}
+  .name-main{
+    font-family:'Great Vibes',cursive;font-size:72px;color:var(--gold-light);line-height:1.1;
+    text-shadow:0 0 30px rgba(212,175,55,0.4);animation:glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow{from{text-shadow:0 0 20px rgba(212,175,55,0.3)}to{text-shadow:0 0 50px rgba(212,175,55,0.7)}}
+  .divider-stars{display:flex;align-items:center;gap:8px;margin:20px auto;color:var(--gold);font-size:12px;}
+  .divider-line{flex:1;height:0.5px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+  .date-text{font-size:18px;color:var(--gold-light);letter-spacing:2px;margin:8px 0;}
+  .place-text{font-size:14px;color:var(--rose);letter-spacing:1px;}
+  .scroll-hint{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:var(--rose);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    animation:bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .section{padding:60px 0 40px;text-align:center;opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .section.visible{opacity:1;transform:translateY(0);}
+  .section-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold-light);margin-bottom:8px;font-style:italic;}
+  .section-sub{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:32px;}
+  .countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+  .count-box{background:rgba(212,175,55,0.08);border:0.5px solid rgba(212,175,55,0.3);border-radius:12px;padding:16px 8px;}
+  .count-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--gold);display:block;line-height:1;}
+  .count-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-top:4px;display:block;}
+  .message-card{background:rgba(212,175,55,0.05);border:0.5px solid rgba(212,175,55,0.2);border-radius:16px;padding:32px 24px;margin-top:8px;font-size:16px;line-height:1.9;color:var(--text-light);font-style:italic;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px;}
+  .photo-slot{aspect-ratio:3/4;border-radius:12px;overflow:hidden;position:relative;background:rgba(212,175,55,0.08);border:0.5px solid rgba(212,175,55,0.2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+  .photo-slot svg{opacity:0.4;}
+  .photo-slot span{font-size:11px;color:var(--rose);letter-spacing:1px;text-transform:uppercase;}
+  .photo-slot.big{grid-row:span 2;}
+  .qr-card{background:rgba(255,255,255,0.05);border:0.5px solid rgba(212,175,55,0.3);border-radius:16px;padding:28px;display:inline-flex;flex-direction:column;align-items:center;gap:16px;cursor:pointer;transition:transform 0.2s;}
+  .qr-card:hover{transform:scale(1.02);}
+  .qr-inner{width:160px;height:160px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;}
+  .qr-label{font-size:13px;color:var(--rose);letter-spacing:1px;}
+  .map-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,0.15);border:0.5px solid var(--gold);color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:14px;padding:10px 24px;border-radius:50px;cursor:pointer;letter-spacing:1px;margin-top:12px;text-decoration:none;transition:background 0.2s;}
+  .map-btn:hover{background:rgba(212,175,55,0.25);}
+  .rsvp-form{display:flex;flex-direction:column;gap:14px;text-align:left;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);}
+  .form-input{background:rgba(212,175,55,0.08);border:0.5px solid rgba(212,175,55,0.3);border-radius:8px;padding:12px 16px;color:var(--text-light);font-family:'Cormorant Garamond',serif;font-size:16px;outline:none;transition:border-color 0.2s;}
+  .form-input:focus{border-color:var(--gold);}
+  .form-input option{background:var(--mid);color:var(--text-light);}
+  .rsvp-btn{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--deep);font-family:'Playfair Display',serif;font-size:16px;font-weight:700;padding:14px;border-radius:50px;cursor:pointer;border:none;letter-spacing:2px;text-transform:uppercase;margin-top:8px;transition:transform 0.2s,box-shadow 0.2s;}
+  .rsvp-btn:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(212,175,55,0.3);}
+  .rsvp-success{display:none;text-align:center;padding:32px;background:rgba(212,175,55,0.08);border:0.5px solid rgba(212,175,55,0.3);border-radius:16px;}
+  .rsvp-success.show{display:block;}
+  .rsvp-form.hide{display:none;}
+  .regalo-card{background:rgba(212,175,55,0.05);border:0.5px solid rgba(212,175,55,0.2);border-radius:16px;padding:28px;text-align:center;}
+  .regalo-text{font-size:15px;line-height:1.8;color:var(--text-light);margin-bottom:20px;}
+  .regalo-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold);color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:15px;padding:12px 28px;border-radius:50px;cursor:pointer;letter-spacing:1px;transition:background 0.2s;text-decoration:none;}
+  .regalo-btn:hover{background:rgba(212,175,55,0.25);}
+  .audio-bar{position:fixed;bottom:20px;right:20px;z-index:100;background:rgba(26,10,46,0.9);border:0.5px solid rgba(212,175,55,0.4);border-radius:50px;padding:10px 18px;display:flex;align-items:center;gap:10px;cursor:pointer;backdrop-filter:blur(10px);transition:transform 0.2s;}
+  .audio-bar:hover{transform:scale(1.05);}
+  .audio-text{font-size:12px;color:var(--gold-light);letter-spacing:1px;}
+  .audio-bars{display:flex;align-items:center;gap:2px;}
+  .audio-bar-line{width:3px;background:var(--gold);border-radius:2px;animation:audioAnim var(--d,0.8s) ease-in-out infinite alternate;}
+  @keyframes audioAnim{from{height:4px}to{height:16px}}
+  .audio-bar-line:nth-child(1){--d:0.6s;height:8px}
+  .audio-bar-line:nth-child(2){--d:0.9s;height:14px}
+  .audio-bar-line:nth-child(3){--d:0.7s;height:6px}
+  .audio-bar-line:nth-child(4){--d:1.0s;height:12px}
+  .paused .audio-bar-line{animation-play-state:paused;height:4px;}
+  .footer{text-align:center;padding:40px 0 20px;color:var(--rose);font-size:13px;opacity:0.7;}
+  .magic-particle{position:fixed;pointer-events:none;z-index:999;width:6px;height:6px;border-radius:50%;animation:explode 1s ease-out forwards;}
+  @keyframes explode{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+  .hero-content{animation:fadeUp 1.2s ease forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="stars-bg" id="starsContainer"></div>
+<div class="floating-petals" id="petalsContainer"></div>
+
+<div class="audio-bar paused" id="audioToggle" onclick="toggleAudio()">
+  <div class="audio-bars" id="audioBars">
+    <div class="audio-bar-line"></div>
+    <div class="audio-bar-line"></div>
+    <div class="audio-bar-line"></div>
+    <div class="audio-bar-line"></div>
+  </div>
+  <span class="audio-text" id="audioText">Reproducir música</span>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-content">
+      <svg class="crown-svg" width="80" height="60" viewBox="0 0 80 60">
+        <path d="M10 50 L10 25 L25 38 L40 10 L55 38 L70 25 L70 50 Z" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="40" cy="10" r="4" fill="#D4AF37"/>
+        <circle cx="10" cy="25" r="3" fill="#D4AF37"/>
+        <circle cx="70" cy="25" r="3" fill="#D4AF37"/>
+        <circle cx="25" cy="37" r="2.5" fill="#F5DEB3"/>
+        <circle cx="55" cy="37" r="2.5" fill="#F5DEB3"/>
+        <line x1="10" y1="50" x2="70" y2="50" stroke="#D4AF37" stroke-width="2"/>
+        <line x1="6" y1="56" x2="74" y2="56" stroke="#D4AF37" stroke-width="1.5"/>
+      </svg>
+      <div class="XV-badge">XV</div>
+      <div class="invite-pre">¡Estás invitada/o a los</div>
+      <div class="name-main">Lucila</div>
+      <div class="divider-stars">
+        <div class="divider-line"></div>
+        <span>✦</span>
+        <div class="divider-line"></div>
+      </div>
+      <div class="date-text">Sábado 16 de Mayo · 2026</div>
+      <div class="place-text">Salón San Marinense</div>
+    </div>
+    <div class="scroll-hint">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M5 8l5 5 5-5" stroke="#C8A4B4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Deslizá</span>
+    </div>
+  </div>
+
+  <div class="section" id="sCountdown">
+    <div class="section-title">Faltan...</div>
+    <div class="section-sub">para la noche más mágica</div>
+    <div class="countdown-grid">
+      <div class="count-box"><span class="count-num" id="days">-</span><span class="count-label">Días</span></div>
+      <div class="count-box"><span class="count-num" id="hours">-</span><span class="count-label">Horas</span></div>
+      <div class="count-box"><span class="count-num" id="minutes">-</span><span class="count-label">Min</span></div>
+      <div class="count-box"><span class="count-num" id="seconds">-</span><span class="count-label">Seg</span></div>
+    </div>
+  </div>
+
+  <div class="section" id="sMsg">
+    <div class="section-title">Una noche de ensueño</div>
+    <div class="section-sub">para Lucila</div>
+    <div class="message-card">
+      Con el corazón lleno de alegría, tengo el honor de invitarte a celebrar conmigo este momento tan especial.<br><br>
+      Quince años de magia, sueños y amor que quiero compartir rodeada de las personas que más quiero.<br><br>
+      <strong style="color:var(--gold-light);font-style:normal;">Lucila</strong>
+    </div>
+  </div>
+
+  <div class="section" id="sGallery">
+    <div class="section-title">Galería</div>
+    <div class="section-sub">momentos especiales</div>
+    <div class="gallery-grid">
+      <div class="photo-slot big">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#D4AF37" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#D4AF37" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span>Foto principal</span>
+      </div>
+      <div class="photo-slot">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#D4AF37" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#D4AF37" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span>Foto 2</span>
+      </div>
+      <div class="photo-slot">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#D4AF37" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#D4AF37" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span>Foto 3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sQR">
+    <div class="section-title">¿Cómo llegar?</div>
+    <div class="section-sub">Salón San Marinense</div>
+    <div style="display:flex;justify-content:center;">
+      <div class="qr-card" onclick="openMaps()">
+        <div class="qr-inner" id="qrContainer"></div>
+        <div class="qr-label">Escaneá para ver en el mapa</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+      <a class="map-btn" onclick="openMaps()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Abrir en Google Maps
+      </a>
+    </div>
+  </div>
+
+  <div class="section" id="sRSVP">
+    <div class="section-title">Confirmá tu asistencia</div>
+    <div class="section-sub">antes del 1 de mayo</div>
+    <div id="rsvpForm" class="rsvp-form">
+      <div class="form-group">
+        <label class="form-label">Tu nombre completo</label>
+        <input class="form-input" type="text" id="guestName" placeholder="María García...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cuántos asistentes?</label>
+        <select class="form-input" id="guestCount">
+          <option value="1">Solo yo (1 persona)</option>
+          <option value="2">2 personas</option>
+          <option value="3">3 personas</option>
+          <option value="4">4 personas</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Alguna restricción alimentaria?</label>
+        <input class="form-input" type="text" id="guestFood" placeholder="Vegetariano, celíaco... (opcional)">
+      </div>
+      <button class="rsvp-btn" onclick="submitRSVP()">✦ Confirmar asistencia ✦</button>
+    </div>
+    <div class="rsvp-success" id="rsvpSuccess">
+      <div style="font-size:40px;margin-bottom:12px;">✨</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold-light);margin-bottom:8px;">¡Gracias!</div>
+      <div style="font-size:15px;color:var(--rose);">Tu confirmación fue recibida.<br>¡Nos vemos el 16 de mayo!</div>
+    </div>
+  </div>
+
+  <div class="section" id="sGift">
+    <div class="section-title">Mesa de regalos</div>
+    <div class="section-sub">si querés sumarte con algo especial</div>
+    <div class="regalo-card">
+      <div style="font-size:48px;margin-bottom:12px;">🎁</div>
+      <div class="regalo-text">Con todo tu cariño es más que suficiente.<br>Si querés hacerme un regalo,<br>pronto vas a encontrar el link acá.</div>
+      <a class="regalo-btn" href="#" onclick="return false;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        Próximamente
+      </a>
+    </div>
+  </div>
+
+  <div class="footer section" id="sFooter">
+    <div class="divider-stars" style="justify-content:center;">
+      <div class="divider-line" style="max-width:80px;"></div>
+      <span>✦</span>
+      <div class="divider-line" style="max-width:80px;"></div>
+    </div>
+    <div style="font-family:'Great Vibes',cursive;font-size:32px;color:var(--gold-light);margin:12px 0;">Lucila</div>
+    <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;">16 · 05 · 2026</div>
+    <div style="margin-top:8px;font-size:12px;">Con amor ✦</div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ESTRELLAS
+const starsC=document.getElementById('starsContainer');
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');s.className='star-particle';
+  const size=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--op:${0.3+Math.random()*0.7};animation-delay:${Math.random()*5}s;`;
+  starsC.appendChild(s);
+}
+// PÉTALOS
+const petalsC=document.getElementById('petalsContainer');
+const petalSVGs=[
+  `<svg width="12" height="16" viewBox="0 0 12 16"><ellipse cx="6" cy="8" rx="5" ry="7" fill="#C8A4B4" opacity="0.6"/></svg>`,
+  `<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#D4AF37" opacity="0.4"/></svg>`,
+  `<svg width="8" height="12" viewBox="0 0 8 12"><ellipse cx="4" cy="6" rx="3" ry="5" fill="#F5DEB3" opacity="0.5"/></svg>`
+];
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');p.className='petal';
+  p.innerHTML=petalSVGs[i%3];
+  p.style.cssText=`left:${Math.random()*100}%;animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*12}s;`;
+  petalsC.appendChild(p);
+}
+// COUNTDOWN
+function updateCountdown(){
+  const target=new Date('2026-05-16T21:00:00');
+  const diff=target-new Date();
+  if(diff<=0){['days','hours','minutes','seconds'].forEach(id=>document.getElementById(id).textContent='0');return;}
+  document.getElementById('days').textContent=Math.floor(diff/86400000);
+  document.getElementById('hours').textContent=Math.floor((diff%86400000)/3600000);
+  document.getElementById('minutes').textContent=Math.floor((diff%3600000)/60000);
+  document.getElementById('seconds').textContent=Math.floor((diff%60000)/1000);
+}
+updateCountdown();setInterval(updateCountdown,1000);
+// SCROLL REVEAL
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.15});
+document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+// QR
+window.addEventListener('load',()=>{
+  try{
+    new QRCode(document.getElementById('qrContainer'),{
+      text:'https://maps.google.com/?q=San+Marinense+Pergamino+Buenos+Aires+Argentina',
+      width:144,height:144,colorDark:'#1a0a2e',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M
+    });
+  }catch(e){}
+});
+function openMaps(){window.open('https://maps.google.com/?q=San+Marinense+Pergamino+Buenos+Aires+Argentina','_blank');}
+// RSVP
+function submitRSVP(){
+  const name=document.getElementById('guestName').value.trim();
+  if(!name){document.getElementById('guestName').focus();return;}
+  document.getElementById('rsvpForm').classList.add('hide');
+  document.getElementById('rsvpSuccess').classList.add('show');
+  createMagicBurst(window.innerWidth/2,window.innerHeight/2);
+}
+// AUDIO
+let audioPlaying=false,audioCtx=null;
+function toggleAudio(){
+  const btn=document.getElementById('audioToggle');
+  const txt=document.getElementById('audioText');
+  if(!audioPlaying){
+    if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();playMagicMusic();}
+    else audioCtx.resume();
+    btn.classList.remove('paused');txt.textContent='Pausar música';audioPlaying=true;
+  }else{
+    audioCtx.suspend();btn.classList.add('paused');txt.textContent='Reproducir música';audioPlaying=false;
+  }
+}
+function playMagicMusic(){
+  if(!audioCtx)return;
+  const notes=[261.63,293.66,329.63,349.23,392.00,440.00,493.88,523.25];
+  const melody=[0,2,4,7,4,2,0,1,3,5,7,5,3,1,2,4,6,4,2,0];
+  function playNote(freq,start,dur,vol){
+    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.connect(gain);gain.connect(audioCtx.destination);
+    osc.type='sine';osc.frequency.value=freq;
+    gain.gain.setValueAtTime(0,start);
+    gain.gain.linearRampToValueAtTime(vol,start+0.05);
+    gain.gain.linearRampToValueAtTime(0,start+dur-0.05);
+    osc.start(start);osc.stop(start+dur);
+  }
+  function loop(){
+    let ct=audioCtx.currentTime+0.1;
+    melody.forEach((ni,i)=>{
+      playNote(notes[ni%notes.length],ct+i*0.4,0.35,0.08);
+      if(i%2===0)playNote(notes[ni%notes.length]*0.5,ct+i*0.4,0.38,0.04);
+    });
+    setTimeout(loop,melody.length*400);
+  }
+  loop();
+}
+// MAGIC PARTICLES
+document.addEventListener('click',function(e){
+  if(e.target.closest('.rsvp-btn')||e.target.closest('.audio-bar'))return;
+  createMagicBurst(e.clientX,e.clientY);
+});
+function createMagicBurst(cx,cy){
+  const colors=['#D4AF37','#F5DEB3','#C8A4B4','#ffffff','#A0832A'];
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');p.className='magic-particle';
+    const angle=(i/8)*Math.PI*2,dist=40+Math.random()*60;
+    p.style.cssText=`left:${cx}px;top:${cy}px;background:${colors[i%colors.length]};--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px;`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1000);
+  }
+}
+</script>
+</body>
+</html>
