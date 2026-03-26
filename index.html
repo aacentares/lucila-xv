@@ -106,12 +106,46 @@
   @keyframes explode{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
   .hero-content{animation:fadeUp 1.2s ease forwards;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  /* SPLASH */
+  .splash{
+    position:fixed;inset:0;z-index:999;
+    background:#04080f;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px;
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .splash.hide{opacity:0;pointer-events:none;}
+  .splash-name{font-family:'Great Vibes',cursive;font-size:64px;color:#E8EDF8;line-height:1.1;margin-bottom:8px;animation:glow 2s ease-in-out infinite alternate;}
+  .splash-sub{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#6A9EC8;margin-bottom:48px;}
+  .splash-btn{
+    width:80px;height:80px;border-radius:50%;
+    background:rgba(100,160,220,0.15);
+    border:1.5px solid rgba(184,200,224,0.6);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:transform 0.2s,background 0.2s;
+    animation:pulse 2s ease-in-out infinite;
+  }
+  .splash-btn:hover{transform:scale(1.1);background:rgba(100,160,220,0.3);}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(100,160,220,0.4)}50%{box-shadow:0 0 0 20px rgba(100,160,220,0)}}
+  .splash-hint{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6A9EC8;margin-top:20px;opacity:0.7;}
 </style>
 </head>
 <body>
 
 <div class="stars-bg" id="starsContainer"></div>
 <div class="floating-petals" id="petalsContainer"></div>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <div class="splash-name">Lucila</div>
+  <div class="splash-sub">XV Años · 23 de Mayo 2026</div>
+  <div class="splash-btn" onclick="enterSite()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#E8EDF8">
+      <polygon points="5,3 19,12 5,21"/>
+    </svg>
+  </div>
+  <div class="splash-hint">Tocá para entrar</div>
+</div>
 
 <div class="audio-bar paused" id="audioToggle" onclick="toggleAudio()">
   <div class="audio-bars" id="audioBars">
@@ -329,19 +363,17 @@ const bgAudio=new Audio('musica.mp3');
 bgAudio.loop=true;bgAudio.volume=0.5;
 let audioPlaying=false;
 
-// Autoplay al primer toque en cualquier parte de la pantalla
-function tryAutoplay(){
-  if(audioPlaying)return;
+function enterSite(){
+  // Ocultar splash
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(()=>document.getElementById('splash').style.display='none',900);
+  // Arrancar música
   bgAudio.play().then(()=>{
     audioPlaying=true;
     document.getElementById('audioToggle').classList.remove('paused');
     document.getElementById('audioText').textContent='Silenciar';
   }).catch(()=>{});
-  document.removeEventListener('click',tryAutoplay);
-  document.removeEventListener('touchstart',tryAutoplay);
 }
-document.addEventListener('click',tryAutoplay);
-document.addEventListener('touchstart',tryAutoplay);
 
 function toggleAudio(){
   const btn=document.getElementById('audioToggle');
