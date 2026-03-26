@@ -31,12 +31,8 @@
   .container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 20px 80px;}
   .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0;position:relative;}
   .crown-svg{margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(100,160,210,0.7));}
-  .XV-badge{
-    font-family:'Playfair Display',serif;font-size:72px;font-weight:700;
-    background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark),var(--gold));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-    line-height:1;margin-bottom:8px;animation:shimmer 3s ease-in-out infinite;
-  }
+  .XV-badge{position:relative;width:100%;height:260px;margin:0 auto 8px;}
+  .XV-badge canvas{width:100%;height:100%;}
   @keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
   .invite-pre{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--rose);margin-bottom:24px;}
   .name-main{
@@ -171,7 +167,7 @@
         <line x1="10" y1="50" x2="70" y2="50" stroke="#B8C8E0" stroke-width="2"/>
         <line x1="6" y1="56" x2="74" y2="56" stroke="#B8C8E0" stroke-width="1.5"/>
       </svg>
-      <div class="XV-badge">XV</div>
+      <div class="XV-badge"><canvas id="xvCanvas" width="440" height="240"></canvas></div>
       <div class="invite-pre">¡Estás invitada/o a los</div>
       <div class="name-main">Lucila</div>
       <div class="divider-stars">
@@ -326,7 +322,142 @@ for(let i=0;i<18;i++){
   p.style.cssText=`left:${Math.random()*100}%;animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*12}s;`;
   petalsC.appendChild(p);
 }
-// COUNTDOWN
+// XV METÁLICO CON REFLEJO AGUA REAL
+(function(){
+  const canvas=document.getElementById('xvCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=700,H=360;
+  canvas.width=W;canvas.height=H;
+  let t=0;
+  const FONT='bold 190px "Playfair Display", serif';
+  const cx=W/2, textY=130;
+  const waterY=250; // justo debajo del XV
+
+  // Offscreen: dibujamos solo el XV para luego reflejarlo con distorsión
+  const off=document.createElement('canvas');
+  off.width=W;off.height=H;
+  const octx=off.getContext('2d');
+
+  function drawTextToOffscreen(){
+    octx.clearRect(0,0,W,H);
+    octx.save();
+    octx.font=FONT;
+    octx.textAlign='center';
+    octx.textBaseline='middle';
+    octx.shadowColor='rgba(0,20,60,0.8)';
+    octx.shadowBlur=30;
+    octx.shadowOffsetY=6;
+    const metal=octx.createLinearGradient(cx-200,textY-90,cx+200,textY+90);
+    metal.addColorStop(0.00,'#ffffff');
+    metal.addColorStop(0.12,'#d0daea');
+    metal.addColorStop(0.28,'#8aaac8');
+    metal.addColorStop(0.42,'#ffffff');
+    metal.addColorStop(0.52,'#c8d8ec');
+    metal.addColorStop(0.65,'#6a8aaa');
+    metal.addColorStop(0.80,'#e8edf8');
+    metal.addColorStop(1.00,'#ffffff');
+    octx.fillStyle=metal;
+    octx.fillText('XV',cx,textY);
+    octx.restore();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Redibujar XV en offscreen
+    drawTextToOffscreen();
+
+    // --- TEXTO PRINCIPAL ---
+    ctx.drawImage(off,0,0);
+
+    // Barrido de luz animado sobre el texto
+    ctx.save();
+    ctx.font=FONT;
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    const shimPos=cx-200+(Math.sin(t*0.45)+1)/2*400;
+    const shim=ctx.createLinearGradient(shimPos-70,0,shimPos+70,0);
+    shim.addColorStop(0,'rgba(255,255,255,0)');
+    shim.addColorStop(0.5,'rgba(255,255,255,0.5)');
+    shim.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=shim;
+    ctx.fillText('XV',cx,textY);
+    ctx.restore();
+
+    // Glow azul sutil
+    ctx.save();
+    ctx.font=FONT;
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(100,160,230,1)';
+    ctx.shadowBlur=22+7*Math.sin(t*0.7);
+    ctx.fillStyle='rgba(120,170,230,0.06)';
+    ctx.fillText('XV',cx,textY);
+    ctx.restore();
+
+    // --- REFLEJO TIPO AGUA ---
+    // Tomamos píxeles del XV y los reflejamos con distorsión de olas
+    const reflectH=120;
+    const srcY=waterY; // de dónde tomamos en el offscreen (justo debajo del texto = arriba del reflejo)
+
+    ctx.save();
+    // Recorte: solo pintar debajo de waterY
+    ctx.beginPath();
+    ctx.rect(0,waterY,W,reflectH);
+    ctx.clip();
+
+    // Dibujamos el reflejo scanline por scanline con distorsión ondulada
+    for(let row=0;row<reflectH;row++){
+      const progress=row/reflectH;
+      // Múltiples ondas superpuestas para efecto agua real
+      const wave1=Math.sin(row*0.18 + t*2.2)*4*(1-progress*0.5);
+      const wave2=Math.sin(row*0.32 - t*1.5)*2.5*(1-progress*0.4);
+      const wave3=Math.sin(row*0.09 + t*3.0)*1.5;
+      const dx=wave1+wave2+wave3;
+
+      // La fuente: scanline espejada (leemos de arriba hacia abajo = abajo del texto hacia arriba)
+      const srcRow=waterY - row - 1;
+      if(srcRow<0)continue;
+
+      ctx.drawImage(
+        off,
+        0, srcRow, W, 1,        // source: 1px de alto en offscreen
+        dx, waterY+row, W, 1    // dest: con desplazamiento horizontal ondulado
+      );
+    }
+
+    // Degradado de desvanecimiento sobre el reflejo
+    const fadeGrad=ctx.createLinearGradient(0,waterY,0,waterY+reflectH);
+    fadeGrad.addColorStop(0,'rgba(4,8,15,0.1)');
+    fadeGrad.addColorStop(0.4,'rgba(4,8,15,0.5)');
+    fadeGrad.addColorStop(1,'rgba(4,8,15,0.95)');
+    ctx.fillStyle=fadeGrad;
+    ctx.fillRect(0,waterY,W,reflectH);
+
+    ctx.restore();
+
+    // Línea del agua — sutil brillo
+    ctx.save();
+    const lineGrad=ctx.createLinearGradient(cx-220,0,cx+220,0);
+    lineGrad.addColorStop(0,'rgba(184,200,224,0)');
+    lineGrad.addColorStop(0.3,'rgba(184,200,224,0.6)');
+    lineGrad.addColorStop(0.5,'rgba(255,255,255,0.8)');
+    lineGrad.addColorStop(0.7,'rgba(184,200,224,0.6)');
+    lineGrad.addColorStop(1,'rgba(184,200,224,0)');
+    ctx.strokeStyle=lineGrad;
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(cx-220,waterY);
+    ctx.lineTo(cx+220,waterY);
+    ctx.stroke();
+    ctx.restore();
+
+    t+=0.03;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 function updateCountdown(){
   const target=new Date('2026-05-23T21:00:00');
   const diff=target-new Date();
