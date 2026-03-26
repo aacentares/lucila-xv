@@ -328,22 +328,37 @@ function submitRSVP(){
 const bgAudio=new Audio('musica.mp3');
 bgAudio.loop=true;bgAudio.volume=0.5;
 let audioPlaying=false;
+
+// Autoplay al primer toque en cualquier parte de la pantalla
+function tryAutoplay(){
+  if(audioPlaying)return;
+  bgAudio.play().then(()=>{
+    audioPlaying=true;
+    document.getElementById('audioToggle').classList.remove('paused');
+    document.getElementById('audioText').textContent='Silenciar';
+  }).catch(()=>{});
+  document.removeEventListener('click',tryAutoplay);
+  document.removeEventListener('touchstart',tryAutoplay);
+}
+document.addEventListener('click',tryAutoplay);
+document.addEventListener('touchstart',tryAutoplay);
+
 function toggleAudio(){
   const btn=document.getElementById('audioToggle');
   const txt=document.getElementById('audioText');
-  if(!audioPlaying){
-    bgAudio.play().then(()=>{
-      btn.classList.remove('paused');txt.textContent='Pausar música';audioPlaying=true;
-    }).catch(()=>{});
-  }else{
+  if(audioPlaying){
     bgAudio.pause();
-    btn.classList.add('paused');txt.textContent='Reproducir música';audioPlaying=false;
+    btn.classList.add('paused');txt.textContent='Reproducir';audioPlaying=false;
+  }else{
+    bgAudio.play().then(()=>{
+      btn.classList.remove('paused');txt.textContent='Silenciar';audioPlaying=true;
+    }).catch(()=>{});
   }
 }
 // MAGIC PARTICLES
 document.addEventListener('click',function(e){
-  if(e.target.closest('.rsvp-btn')||e.target.closest('.audio-bar'))return;
-  createMagicBurst(e.clientX,e.clientY);
+  if(e.target.closest('.audio-bar'))return;
+  if(!e.target.closest('.rsvp-btn'))createMagicBurst(e.clientX,e.clientY);
 });
 function createMagicBurst(cx,cy){
   const colors=['#B8C8E0','#E8EDF8','#6A9EC8','#ffffff','#7A90AA'];
