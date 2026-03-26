@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucila XV · 16 de Mayo 2026</title>
+<title>Lucila XV · 23 de Mayo 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -145,8 +145,8 @@
         <span>✦</span>
         <div class="divider-line"></div>
       </div>
-      <div class="date-text">Sábado 16 de Mayo · 2026</div>
-      <div class="place-text">Salón San Marinense</div>
+      <div class="date-text">Sábado 23 de Mayo · 21 hs · 2026</div>
+      <div class="place-text">Asociación San Marinense · Av. Dr. Jáuregui 607</div>
     </div>
     <div class="scroll-hint">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -198,7 +198,7 @@
 
   <div class="section" id="sQR">
     <div class="section-title">¿Cómo llegar?</div>
-    <div class="section-sub">Salón San Marinense</div>
+    <div class="section-sub">Av. Dr. Jáuregui 607 · Pergamino</div>
     <div style="display:flex;justify-content:center;">
       <div class="qr-card" onclick="openMaps()">
         <div class="qr-inner" id="qrContainer"></div>
@@ -215,7 +215,7 @@
 
   <div class="section" id="sRSVP">
     <div class="section-title">Confirmá tu asistencia</div>
-    <div class="section-sub">antes del 1 de mayo</div>
+    <div class="section-sub">antes del 10 de mayo</div>
     <div id="rsvpForm" class="rsvp-form">
       <div class="form-group">
         <label class="form-label">Tu nombre completo</label>
@@ -239,7 +239,7 @@
     <div class="rsvp-success" id="rsvpSuccess">
       <div style="font-size:40px;margin-bottom:12px;">✨</div>
       <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold-light);margin-bottom:8px;">¡Gracias!</div>
-      <div style="font-size:15px;color:var(--rose);">Tu confirmación fue recibida.<br>¡Nos vemos el 16 de mayo!</div>
+      <div style="font-size:15px;color:var(--rose);">Tu confirmación fue recibida.<br>¡Nos vemos el 23 de mayo!</div>
     </div>
   </div>
 
@@ -263,7 +263,7 @@
       <div class="divider-line" style="max-width:80px;"></div>
     </div>
     <div style="font-family:'Great Vibes',cursive;font-size:32px;color:var(--gold-light);margin:12px 0;">Lucila</div>
-    <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;">16 · 05 · 2026</div>
+    <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;">23 · 05 · 2026</div>
     <div style="margin-top:8px;font-size:12px;">Con amor ✦</div>
   </div>
 
@@ -294,7 +294,7 @@ for(let i=0;i<18;i++){
 }
 // COUNTDOWN
 function updateCountdown(){
-  const target=new Date('2026-05-16T21:00:00');
+  const target=new Date('2026-05-23T21:00:00');
   const diff=target-new Date();
   if(diff<=0){['days','hours','minutes','seconds'].forEach(id=>document.getElementById(id).textContent='0');return;}
   document.getElementById('days').textContent=Math.floor(diff/86400000);
@@ -310,12 +310,12 @@ document.querySelectorAll('.section').forEach(s=>observer.observe(s));
 window.addEventListener('load',()=>{
   try{
     new QRCode(document.getElementById('qrContainer'),{
-      text:'https://maps.google.com/?q=San+Marinense+Pergamino+Buenos+Aires+Argentina',
+      text:'https://maps.google.com/?q=Avenida+Doctor+Jauregui+607+Pergamino+Buenos+Aires+Argentina',
       width:144,height:144,colorDark:'#1a0a2e',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M
     });
   }catch(e){}
 });
-function openMaps(){window.open('https://maps.google.com/?q=San+Marinense+Pergamino+Buenos+Aires+Argentina','_blank');}
+function openMaps(){window.open('https://maps.google.com/?q=Avenida+Doctor+Jauregui+607+Pergamino+Buenos+Aires+Argentina','_blank');}
 // RSVP
 function submitRSVP(){
   const name=document.getElementById('guestName').value.trim();
