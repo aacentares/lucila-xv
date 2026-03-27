@@ -32,7 +32,7 @@
   .container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 20px 80px;}
   .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0;position:relative;}
   .crown-svg{margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(100,160,210,0.7));}
-  .XV-badge{position:relative;width:100%;height:240px;margin:0 auto 8px;}
+  .XV-badge{position:relative;width:100%;height:200px;margin:0 auto 8px;}
   .XV-badge canvas{width:100%;height:100%;}
   @keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
   .invite-pre{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--rose);margin-bottom:24px;}
@@ -332,12 +332,12 @@ for(let i=0;i<18;i++){
   const canvas=document.getElementById('xvCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  const W=700,H=330;
+  const W=700,H=240;
   canvas.width=W;canvas.height=H;
   let t=0;
   const FONT='bold 190px "Playfair Display", serif';
   const cx=W/2, textY=130;
-  const waterY=210; // justo en la base del XV
+  const waterY=210;
 
   // Offscreen: dibujamos solo el XV para luego reflejarlo con distorsión
   const off=document.createElement('canvas');
@@ -399,63 +399,6 @@ for(let i=0;i<18;i++){
     ctx.shadowBlur=22+7*Math.sin(t*0.7);
     ctx.fillStyle='rgba(120,170,230,0.06)';
     ctx.fillText('XV',cx,textY);
-    ctx.restore();
-
-    // --- REFLEJO TIPO AGUA ---
-    // Tomamos píxeles del XV y los reflejamos con distorsión de olas
-    const reflectH=120;
-    const srcY=waterY; // de dónde tomamos en el offscreen (justo debajo del texto = arriba del reflejo)
-
-    ctx.save();
-    // Recorte: solo pintar debajo de waterY
-    ctx.beginPath();
-    ctx.rect(0,waterY,W,reflectH);
-    ctx.clip();
-
-    // Dibujamos el reflejo scanline por scanline con distorsión ondulada
-    for(let row=0;row<reflectH;row++){
-      const progress=row/reflectH;
-      // Múltiples ondas superpuestas para efecto agua real
-      const wave1=Math.sin(row*0.18 + t*2.2)*4*(1-progress*0.5);
-      const wave2=Math.sin(row*0.32 - t*1.5)*2.5*(1-progress*0.4);
-      const wave3=Math.sin(row*0.09 + t*3.0)*1.5;
-      const dx=wave1+wave2+wave3;
-
-      // La fuente: scanline espejada (leemos de arriba hacia abajo = abajo del texto hacia arriba)
-      const srcRow=waterY - row - 1;
-      if(srcRow<0)continue;
-
-      ctx.drawImage(
-        off,
-        0, srcRow, W, 1,        // source: 1px de alto en offscreen
-        dx, waterY+row, W, 1    // dest: con desplazamiento horizontal ondulado
-      );
-    }
-
-    // Degradado de desvanecimiento sobre el reflejo
-    const fadeGrad=ctx.createLinearGradient(0,waterY,0,waterY+reflectH);
-    fadeGrad.addColorStop(0,'rgba(4,8,15,0.1)');
-    fadeGrad.addColorStop(0.4,'rgba(4,8,15,0.5)');
-    fadeGrad.addColorStop(1,'rgba(4,8,15,0.95)');
-    ctx.fillStyle=fadeGrad;
-    ctx.fillRect(0,waterY,W,reflectH);
-
-    ctx.restore();
-
-    // Línea del agua — sutil brillo
-    ctx.save();
-    const lineGrad=ctx.createLinearGradient(cx-220,0,cx+220,0);
-    lineGrad.addColorStop(0,'rgba(184,200,224,0)');
-    lineGrad.addColorStop(0.3,'rgba(184,200,224,0.6)');
-    lineGrad.addColorStop(0.5,'rgba(255,255,255,0.8)');
-    lineGrad.addColorStop(0.7,'rgba(184,200,224,0.6)');
-    lineGrad.addColorStop(1,'rgba(184,200,224,0)');
-    ctx.strokeStyle=lineGrad;
-    ctx.lineWidth=1;
-    ctx.beginPath();
-    ctx.moveTo(cx-220,waterY);
-    ctx.lineTo(cx+220,waterY);
-    ctx.stroke();
     ctx.restore();
 
     t+=0.03;
