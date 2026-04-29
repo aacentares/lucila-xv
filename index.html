@@ -452,21 +452,25 @@ function submitRSVP(){
   const food=document.getElementById('guestFood').value.trim();
   const btn=document.querySelector('.rsvp-btn');
   btn.textContent='Enviando...';btn.disabled=true;
-  fetch('https://formspree.io/f/xrejzajv',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({nombre:name,asistentes:count,restriccion:food||'Ninguna'})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.ok){
-      document.getElementById('rsvpForm').classList.add('hide');
-      document.getElementById('rsvpSuccess').classList.add('show');
-      createMagicBurst(window.innerWidth/2,window.innerHeight/2);
-    } else {
-      btn.textContent='✦ Confirmar asistencia ✦';btn.disabled=false;
-      alert('Hubo un error, intentá de nuevo.');
-    }
+  const payload={nombre:name,asistentes:count,restriccion:food||'Ninguna'};
+  // Mandar a Formspree y Google Sheets al mismo tiempo
+  Promise.all([
+    fetch('https://formspree.io/f/xrejzajv',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(payload)
+    }),
+    fetch('https://script.google.com/macros/s/AKfycbyhxhMzV3ch2zp5olnhpY61bxP3k_fvLyRAV02uOQnuBoiTl0gUvixJzPHAtdjiwdQ7vA/exec',{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    })
+  ])
+  .then(()=>{
+    document.getElementById('rsvpForm').classList.add('hide');
+    document.getElementById('rsvpSuccess').classList.add('show');
+    createMagicBurst(window.innerWidth/2,window.innerHeight/2);
   })
   .catch(()=>{
     btn.textContent='✦ Confirmar asistencia ✦';btn.disabled=false;
