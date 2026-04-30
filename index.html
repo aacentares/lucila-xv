@@ -61,11 +61,11 @@
   .count-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--gold);display:block;line-height:1;}
   .count-label{font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-top:4px;display:block;}
   .message-card{background:rgba(212,175,55,0.05);border:0.5px solid rgba(212,175,55,0.2);border-radius:16px;padding:32px 24px;margin-top:8px;font-size:17px;line-height:1.9;color:var(--text-light);font-style:italic;}
-  .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px;}
-  .photo-slot{aspect-ratio:3/4;border-radius:12px;overflow:hidden;position:relative;background:rgba(212,175,55,0.08);border:0.5px solid rgba(212,175,55,0.2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
-  .photo-slot svg{opacity:0.4;}
-  .photo-slot span{font-size:14px;color:var(--rose);letter-spacing:1px;text-transform:uppercase;}
-  .photo-slot.big{grid-row:span 2;}
+  .gallery-single{width:100%;border-radius:16px;overflow:hidden;border:0.5px solid rgba(184,200,224,0.2);aspect-ratio:16/9;position:relative;}
+  .gallery-single img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-placeholder{width:100%;height:100%;position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(184,200,224,0.05);}
+  .photo-placeholder svg{opacity:0.4;}
+  .photo-placeholder span{font-size:14px;color:var(--rose);letter-spacing:1px;text-transform:uppercase;}
   .qr-card{background:rgba(255,255,255,0.05);border:0.5px solid rgba(212,175,55,0.3);border-radius:16px;padding:28px;display:inline-flex;flex-direction:column;align-items:center;gap:16px;cursor:pointer;transition:transform 0.2s;}
   .qr-card:hover{transform:scale(1.02);}
   .qr-inner{width:160px;height:160px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;}
@@ -228,18 +228,11 @@
   <div class="section" id="sGallery">
     <div class="section-title">Galería</div>
     <div class="section-sub">momentos especiales</div>
-    <div class="gallery-grid">
-      <div class="photo-slot big">
+    <div class="gallery-single">
+      <img src="foto-galeria.png" alt="Lucila" onerror="this.style.display='none';document.getElementById('photoPlaceholder').style.display='flex';">
+      <div id="photoPlaceholder" class="photo-placeholder">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#B8C8E0" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#B8C8E0" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#B8C8E0" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        <span>Foto principal</span>
-      </div>
-      <div class="photo-slot">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#B8C8E0" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#B8C8E0" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#B8C8E0" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        <span>Foto 2</span>
-      </div>
-      <div class="photo-slot">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="25" rx="3" stroke="#B8C8E0" stroke-width="1.5"/><circle cx="13" cy="17" r="3" stroke="#B8C8E0" stroke-width="1.5"/><path d="M4 26l8-7 6 5 5-4 13 9" stroke="#B8C8E0" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        <span>Foto 3</span>
+        <span>Foto próximamente</span>
       </div>
     </div>
   </div>
